@@ -1,4 +1,5 @@
-package cm;
+package cm.users;
+import java.util.ArrayList;
 
 public class User
 {
@@ -13,7 +14,7 @@ public class User
     protected int daily_sugar_limit; // Daily sugar limit, in grams
     protected boolean vegan; // If the user is vegan or not
     protected boolean gluten; // If the user can consume gluten, could be included in allergies but this is more specific
-    protected String[] allergies; // Any ingredient a user could be allergic to, to avoid recommending said recipes
+    protected ArrayList<String> allergies; // Any ingredient a user could be allergic to, to avoid recommending said recipes
 
     public User(String name, int age, int protein_goal, int carbs, int cholesterol, int calories, String[] allergies)
     {

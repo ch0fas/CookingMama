@@ -1,5 +1,5 @@
 // Temporary file for specific small testing, can be ignored
-import cm.User;
+import cm.users.User;
 
 public class Playground
 {

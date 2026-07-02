@@ -1,8 +1,8 @@
-package cm;
+package cm.recipes;
 import java.util.ArrayList;
 
 // The structure for the different recipes we have
-public class Recipe
+public abstract class Recipe
 {
     // Recipe attributes
     protected String recipe_name;
@@ -10,5 +10,7 @@ public class Recipe
     protected double yield; // How many "servings" the original recipe amounts can create
     protected ArrayList<String> ingredients; // The ingredients by themselves, useful to check for allergies
     protected ArrayList<String> instructions; // The instructions
+    protected NutrientProfile nutrients;
 
+    public abstract double getPortionWeight();
 }
