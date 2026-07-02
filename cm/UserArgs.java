@@ -1,4 +1,4 @@
-package cm_enums;
+package cm;
 
 public enum UserArgs
 {
