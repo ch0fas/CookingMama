@@ -1,4 +1,5 @@
 package cm.users;
+import cm.recipes.Recipe;
 import java.util.ArrayList;
 
 public class User
@@ -14,9 +15,10 @@ public class User
     protected int daily_sugar_limit; // Daily sugar limit, in grams
     protected boolean vegan; // If the user is vegan or not
     protected boolean gluten; // If the user can consume gluten, could be included in allergies but this is more specific
+    protected boolean muslim; // If the user is muslim, and must therefore adhere to islamic dietary laws
     protected ArrayList<String> allergies; // Any ingredient a user could be allergic to, to avoid recommending said recipes
 
-    public User(String name, int age, int protein_goal, int carbs, int cholesterol, int calories, String[] allergies)
+    public User(String name, int age, int protein_goal, int carbs, int cholesterol, int calories, int sodium, int sugar, boolean vegan, boolean gluten, boolean muslim, ArrayList<String> allergies)
     {
         setName(name);
         setAge(age);
@@ -24,6 +26,11 @@ public class User
         setCarbs(carbs);
         setCholesterol(cholesterol);
         setCalories(calories);
+        setSodium(sodium);
+        setSugar(sugar);
+        setVegan(vegan);
+        setGluten(gluten);
+        setMuslim(muslim);
         setAllergies(allergies);
     }
 
@@ -81,10 +88,80 @@ public class User
         } else this.daily_sodium_limit = 2300;
     }
 
-    public void setAllergies(String[] allergies)
+    public void setSugar(int sugar)
+    {
+        if (sugar >= 0)
+        {
+            this.daily_sugar_limit = sugar;
+        } else this.daily_sugar_limit = 48;
+    }
+
+    public void setVegan(boolean vegan) { this.vegan = vegan; }
+    public void setGluten(boolean gluten) { this.gluten = gluten; }
+    public void setMuslim(boolean muslim) { this.muslim = muslim; }
+
+
+    public void setAllergies(ArrayList<String> allergies)
     {
         this.allergies = allergies;
     }
+
+    // Creates new DietaryFilter-derivative objects for every allergy the user has
+    public ArrayList<DietaryFilter> getUserFilters()
+    {
+        ArrayList<DietaryFilter> filters = new ArrayList<>();
+
+        if (vegan)
+        {
+            filters.add(new VeganFilter());
+        }
+        if (gluten)
+        {
+            filters.add(new GlutenFilter());
+        }
+        if (muslim)
+        {
+            filters.add(new HalalFilter());
+        }
+
+        if (getAllergies() != null)
+        {
+            for (String allergen: getAllergies())
+            {
+                filters.add(new AllergyFilter(allergen));
+            }
+        }
+
+        return filters;
+    }
+
+    // Uses the filters to check if the user can consume a specific recipe
+    public boolean canEat(Recipe recipe)
+    {
+        for (DietaryFilter df: getUserFilters())
+        {
+            if (df.matches(recipe))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    //Getters
+    public String getName() { return this.name; }
+    public int getAge() { return this.age; }
+    public int getProteinGoal() { return this.daily_protein_goal; }
+    public int getCarbLimit() { return this.daily_carb_limit; }
+    public int getCholesterolLimit() { return this.daily_cholesterol_limit; }
+    public int getCalorieLimit() { return this.daily_calorie_limit; }
+    public int getSodiumLimit() { return this.daily_sodium_limit; }
+    public int getSugarLimit() { return this.daily_sodium_limit; }
+    public boolean isVegan() { return this.vegan; }
+    public boolean noGluten() { return this.gluten; }
+    public boolean isMuslim() { return this.muslim;}
+    public ArrayList<String> getAllergies() { return this.allergies; }
 
     public String getAllergyString()
     {
