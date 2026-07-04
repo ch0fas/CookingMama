@@ -1,8 +1,13 @@
 import java.io.*;
 import java.util.Scanner;
+import cm.users.*;
+import cm.recipes.*;
 
 public class Main
 {
+    // Welcome protocol for when there isn't a user yet
+    public User welcomeProtocol()
+    
     public static void main(String[] args) throws Exception
     {
         // Attributes
