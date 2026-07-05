@@ -1,12 +1,11 @@
 Sofia
 21
-49
-300
 150
-2200
-2300
-48
+150
+150
+150
+150
+150
+true
 false
-false
-false
-chocolate, nuts
+true

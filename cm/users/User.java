@@ -168,13 +168,13 @@ public class User
         String final_allergy_string = "";
         for (String e:allergies)
         {
-            final_allergy_string += String.format("%s, ", e);
+            final_allergy_string += String.format(" ", e);
         }
         return final_allergy_string;
     }
 
     public String toString()
     {
-        return String.format("About You\nName: %s, Age: %d\nDaily Protein Goal: %d\nDaily Carb Limit: %d\nDaily Cholesterol Limit: %d\nDaily Calorie Limit: %d\nDaily Sodium Limit: %d\nDaily Sugar Limit: %d\nAllergies: %s", this.name, this.age, this.daily_protein_goal, this.daily_carb_limit, this.daily_cholesterol_limit, this.daily_calorie_limit, this.daily_sodium_limit, this.daily_sugar_limit, getAllergyString());
+        return String.format("About You\nName: %s, Age: %d\nDaily Protein Goal: %d\nDaily Carb Limit: %d\nDaily Cholesterol Limit: %d\nDaily Calorie Limit: %d\nDaily Sodium Limit: %d\nDaily Sugar Limit: %d\nIs Vegan? %s\nIs Gluten Allergic? %s\nIs Muslim? %s\nAllergies: %s", getName(), getAge(), getProteinGoal(), getCarbLimit(), getCholesterolLimit(), getCalorieLimit(), getSodiumLimit(), getSugarLimit(), isVegan(), noGluten(), isMuslim(), getAllergyString());
     }
 }

@@ -1,6 +1,0 @@
-package cm.users;
-
-public enum UserValuesEnum
-{
-    NAME, AGE, PROTEIN, CARBS, CHOLESTEROL, CALORIE, SODIUM, SUGAR, VEGAN, GLUTEN, MUSLIM, ALLERGIES
-}
