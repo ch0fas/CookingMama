@@ -1,12 +1,22 @@
-// Temporary file for specific small testing, can be ignored
-import cm.users.User;
+import java.util.ArrayList;
+
+import cm.recipes.NutrientProfile;
+import cm.recipes.Recipe;
 
 public class Playground
 {
-    public static void main(String[] args)
+    public static void main(String[] args) 
     {
-        String[] allergies = {"Chocolate", "Peanuts"};
-        User user = new User("Sofia", 21, -1, -1, -1, -1, allergies);
-        System.out.println(user);
+        NutrientProfile np1 = new NutrientProfile(1, 2, 3, 4, 5, 6);
+        ArrayList<String> ingredients = new ArrayList<>();
+        ingredients.add("cereal");
+        ingredients.add("milk");
+        ArrayList<String> instructions = new ArrayList<>();
+        instructions.add("Pour cereal into bowl");
+        instructions.add("Pour milk");
+        Recipe recipe1 = new Recipe("Cool Cereal", 5, 1, "breakfast", ingredients, instructions, np1);
+
+        System.out.println(recipe1);
+        // Nothing here for now    
     }
 }

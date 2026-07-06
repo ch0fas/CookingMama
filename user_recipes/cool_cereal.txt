@@ -1,0 +1,13 @@
+Cool Cereal
+5
+1.0
+breakfast
+10
+10
+10
+10
+10
+10
+cereal,milk,
+foo
+bar
