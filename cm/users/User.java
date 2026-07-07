@@ -149,6 +149,36 @@ public class User
         return true;
     }
 
+    // Checks if nutritional requirements are met
+    public void getNutritionalConsiderations(ArrayList<Recipe> recipes)
+    {
+        int total_protein = 0;
+        int total_carbs = 0;
+        int total_cholesterol = 0;
+        int total_calories = 0;
+        int total_sodium = 0;
+        int total_sugar = 0;
+
+        for (Recipe r:recipes)
+        {
+            total_protein += r.getNutrientProfile().getProtein();
+            total_carbs += r.getNutrientProfile().getCarbs();
+            total_cholesterol += r.getNutrientProfile().getCholesterol();
+            total_calories += r.getNutrientProfile().getCalories();
+            total_sodium += r.getNutrientProfile().getSodium();
+            total_sugar += r.getNutrientProfile().getSugar();
+        }
+
+        System.out.println("Some considerations: ");
+        if (total_protein < getProteinGoal()) { System.out.printf("NOTE: This meal plan does not meet your protein goals (%d < %d)\n", total_protein, getProteinGoal()); }
+        if (total_carbs > getCarbLimit()) { System.out.printf("NOTE: This meal plan exceeds your carbs limit (%d > %d)\n", total_carbs, getCarbLimit()); }
+        if (total_cholesterol > getCholesterolLimit()) { System.out.printf("NOTE: This meal plan exceeds your cholesterol limit (%d > %d)\n", total_cholesterol, getCholesterolLimit()); }
+        if (total_calories > getCalorieLimit()) { System.out.printf("NOTE: This meal plan exceeds your calorie limit (%d > %d)\n", total_calories, getCalorieLimit()); }
+        if (total_sodium > getSodiumLimit()) { System.out.printf("NOTE: This meal plan exceeds your sodium limit (%d > %d)\n", total_sodium, getSodiumLimit()); }
+        if (total_sugar > getSugarLimit()) { System.out.printf("NOTE: This meal plan exceeds your sugar limit (%d > %d)\n", total_sugar, getSugarLimit()); }
+        
+    }
+
     //Getters
     public String getName() { return this.name; }
     public int getAge() { return this.age; }

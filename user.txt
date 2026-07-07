@@ -6,6 +6,6 @@ Sofia
 150
 150
 150
-true
 false
-true
+false
+false

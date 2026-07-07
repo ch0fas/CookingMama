@@ -1,9 +1,10 @@
 import java.io.*;
-import java.nio.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.IOException;
@@ -243,10 +244,123 @@ public class Main
             }
         }
 
-        System.out.println(recipes);
-
         return recipes;
         
+    }
+
+    public static void checkRecipesByIngredient(ArrayList<Recipe> recipes)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String user_ingredient;
+        
+        System.out.printf("Write down a specific ingredient: ");
+        user_ingredient = scanner.nextLine();
+        scanner.close();
+
+        System.out.printf("\nWith %s you can cook the following meals: \n", user_ingredient);
+        for (Recipe r:recipes)
+        {
+            for (String e:r.getIngredients())
+            {
+                if (e.contains(user_ingredient))
+                {
+                    System.out.println(r.getRecipeName());
+                }
+            }
+        }
+    }
+
+    public static void checkParticularRecipe(ArrayList<Recipe> recipes)
+    {
+        int chosen_recipe;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nWhich recipe do you want to check out? ");
+        for (int i = 0; i < recipes.size(); i++)
+        {
+            System.out.printf("%d %s\n", i, recipes.get(i).getRecipeName());
+        }
+        System.out.printf("Choose a recipe by the number to its left: ");
+        chosen_recipe = scanner.nextInt();
+        scanner.nextLine();
+        scanner.close();
+        System.out.printf("\n%s", recipes.get(chosen_recipe).toString());
+    }
+
+    public static void recommendRecipes(User user, ArrayList<Recipe> valid_recipes)
+    {
+        ArrayList<Recipe> chosen_recipes = new ArrayList<>();
+        HashSet<String> seen = new HashSet<>();
+        boolean ok_by_user = false;
+        String user_choice;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("The program proposes the following meal plan: ");
+
+        do
+        {
+            chosen_recipes.clear();
+            seen.clear();
+            Collections.shuffle(valid_recipes); // Shuffling so that the order changes each time
+            for (Recipe r:valid_recipes)
+            {
+                if (seen.add(r.getTimeOfDay()))
+                {
+                    chosen_recipes.add(r);
+                    System.out.printf("%s: %s\n", r.getTimeOfDay(), r.getRecipeName());
+
+                }
+
+                if (chosen_recipes.size() == 3)
+                {
+                    break;
+                }
+            }
+
+            user.getNutritionalConsiderations(chosen_recipes);
+            System.out.printf("Do you still want this meal plan? (yes/no) ");
+            user_choice = scanner.nextLine();
+
+            if (user_choice.equals("yes"))
+            {
+                ok_by_user = true;
+            }
+
+            
+
+        } while (!ok_by_user);
+
+        scanner.close();
+    }
+
+    public static void checkCompliance(User user, ArrayList<Recipe> valid_recipes)
+    {
+        ArrayList<Recipe> chosen_recipes = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int user_choice;
+
+        System.out.println("Choose three of the following recipes by the number on the left: ");
+        for (int i = 0; i < valid_recipes.size(); i++)
+        {
+            System.out.printf("%d) %s (%s)\n", i, valid_recipes.get(i).getRecipeName(), valid_recipes.get(i).getTimeOfDay());
+        }
+
+        do
+        {
+            System.out.printf("Choice %d: ", chosen_recipes.size() + 1);
+            user_choice = scanner.nextInt();
+            scanner.nextLine();
+            chosen_recipes.add(valid_recipes.get(user_choice));
+        } while (chosen_recipes.size() < 3);
+
+        System.out.println("You chose: ");
+        for (Recipe r:chosen_recipes)
+        {
+            System.out.println(r.getRecipeName());
+        }
+        user.getNutritionalConsiderations(chosen_recipes);
+
+        scanner.close();
     }
     
     public static void createNewRecipe()
@@ -325,7 +439,6 @@ public class Main
         scanner.close();
 
         recipe_username = RECIPE_DIRECTORY + recipe_name.toLowerCase().replace(" ", "_") + ".txt";
-        System.out.println(recipe_username);
 
         // Now that we know this, we can create and open the new file to write into it
         try
@@ -410,6 +523,7 @@ public class Main
         List<String> user_info = null;
         Scanner scanner = new Scanner(System.in);
         ArrayList<Recipe> recipes = new ArrayList<>();
+        ArrayList<Recipe> valid_recipes = new ArrayList<>();
 
         recipes = generateRecipeObjects();
 
@@ -448,20 +562,40 @@ public class Main
 
         User user = new User(name, age, protein_goal, carbs, cholesterol, calories, sodium, sugar, vegan, gluten, muslim, allergies);
 
+        for (Recipe e:recipes)
+        {
+            if (user.canEat(e))
+            {
+                valid_recipes.add(e);
+            }
+        }
+
         System.out.printf("Welcome back to Cooking Mama 3.0 %s! Choose an option below!\n", user.getName());
         System.out.println("1) Recommend meal plan"); // Get an automatic meal plan for breakfast, lunch and dinner based on your user info
-        System.out.println("2) Verify meal plan"); // Choose a meal plan yourself and see if it's compliant to your needs and allergies
+        System.out.println("2) Verify meal plan"); // Choose a meal plan yourself and check compliance with goals
         System.out.println("3) Create new recipe"); // Create a new custom recipe
-        System.out.println("4) Re-do user"); // If the user wrote their information wrong or wants to change their goals, they can re-do their user
-        System.out.println("5) Check Recipe"); // Allows the user to check a particular recipe
+        System.out.println("4) Check Recipe"); // Allows the user to check a particular recipe
+        System.out.println("5) Search recipe by ingredient"); // Allows the user to see which recipes have a certain ingredient
         System.out.println("6) Exit Program");
         System.out.printf("Choose: ");
         user_choice = scanner.nextInt();
         scanner.nextLine();
 
         switch (user_choice) {
+            case 1:
+                recommendRecipes(user, valid_recipes);
+                break;
+            case 2:
+                checkCompliance(user, valid_recipes);
+                break;
             case 3:
                 createNewRecipe();
+                break;
+            case 4:
+                checkParticularRecipe(recipes);
+                break;
+            case 5:
+                checkRecipesByIngredient(valid_recipes);
                 break;
             case 6:
                 System.exit(0);
