@@ -336,10 +336,14 @@ public class Main
             {
                 ok_by_user = true;
             }
-
-            
-
         } while (!ok_by_user);
+
+        System.out.println();
+        System.out.println(valid_recipes.get(0).toString());
+        System.out.println();
+        System.out.println(valid_recipes.get(1).toString());
+        System.out.println();
+        System.out.println(valid_recipes.get(2).toString());
 
         scanner.close();
     }
