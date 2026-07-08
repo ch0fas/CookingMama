@@ -21,20 +21,6 @@ public class NutrientProfile
         this.sugar = sugar;
     }
 
-    // Changes NutrientProfile values based on the serving size changing
-    public NutrientProfile scale(double factor)
-    {
-        return new NutrientProfile
-        (
-            (int) Math.round(this.protein * factor),
-            (int) Math.round(this.carbs * factor),
-            (int) Math.round(this.cholesterol * factor),
-            (int) Math.round(this.calories * factor),
-            (int) Math.round(this.sodium * factor),
-            (int) Math.round(this.sugar * factor)
-        );
-    }
-
     // Getters
     public int getProtein() { return this.protein;}
     public int getCarbs() { return this.carbs;}

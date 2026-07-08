@@ -3,6 +3,7 @@ import cm.recipes.Recipe;
 
 public class GlutenFilter implements DietaryFilter
 {
+    // Foods that generally contain gluten.
     private final String[] GLUTEN_FOODS = {"wheat", "flour", "bread", "pasta", "grain", "cereal", "cereals","barley", "rye", "oat", "oats"};
 
     @Override

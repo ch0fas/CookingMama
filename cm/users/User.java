@@ -140,7 +140,7 @@ public class User
     {
         for (DietaryFilter df: getUserFilters())
         {
-            if (df.matches(recipe))
+            if (df.matches(recipe)) // Because of Polymorphism, all filters can be checked using their shared matches() method, even if it differs amongst each
             {
                 return false;
             }

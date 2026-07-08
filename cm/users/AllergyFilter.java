@@ -10,6 +10,7 @@ public class AllergyFilter implements DietaryFilter
         this.allergen = allergen;
     }
 
+    // Like the other filters, but this one only checks the different separate allergen the user may type in, like "chocolate" or "nuts"
     @Override
     public boolean matches(Recipe recipe)
     {

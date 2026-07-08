@@ -3,7 +3,9 @@ import cm.recipes.Recipe;
 
 public class HalalFilter implements DietaryFilter
 {
-    private final String[] HALAL_KEYWORDS = {"pork", "wine", "alcohol"};
+    // The main things I found that muslims cant eat
+    // Unsurprisingly I am not a muslim so this may be incomplete. Feel free to add more
+    private final String[] HALAL_KEYWORDS = {"pork", "wine", "alcohol", "beer"};
 
     public boolean matches(Recipe recipe)
     {

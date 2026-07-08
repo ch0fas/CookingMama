@@ -64,6 +64,7 @@ public class Main
 
         try
         {
+            // Prompts the user to enter their information
             System.out.printf("Welcome to Cooking Mama 3.0\nWhat is your name? ");
             name = scanner.nextLine();
             System.out.printf("How old are you? ");
@@ -154,12 +155,13 @@ public class Main
             ex.printStackTrace();
         }
 
-        System.out.println("User creation done! Take a look");
+        System.out.println("User creation done! Take a look\n");
         System.out.println(new_user.toString());
         System.out.println();
         System.out.println();
     }
 
+    // Generates a new Recipe object based on the information on a specific file
     public static Recipe generateRecipeObject(String file_name)
     {        
         String recipe_name;
@@ -171,6 +173,7 @@ public class Main
         ArrayList<String> instructions = new ArrayList<>();
         NutrientProfile np1;
         
+        // Reads info about a recipe from the file where it is located
         List<String> recipe_info = null;
         try
         {
@@ -201,6 +204,7 @@ public class Main
 
         for (String e:recipe_info.get(10).split(","))
         {
+            // The method createNewRecipe() includes an empty string at the end of the ingredients. I felt this was the easiest fix
             if (!e.isBlank())
             {
                 ingredients.add(e);
@@ -209,7 +213,7 @@ public class Main
 
         for (int i=11; i < recipe_info.size(); i++)
         {
-            instructions.add(recipe_info.get(i));
+            instructions.add(recipe_info.get(i)); // Since the last lines of the file will *always* be the instructions, I can iterate until the end of the file
         }
 
         Recipe recipe = new Recipe
@@ -226,6 +230,7 @@ public class Main
         return recipe;
     }
 
+    // This function basically just iterates the folder with all the recipes and runs the generateRecipeObject() method for all of them, and returns an ArrayList with all of them
     public static ArrayList<Recipe> generateRecipeObjects()
     {
         ArrayList<Recipe> recipes = new ArrayList<>();
@@ -248,6 +253,7 @@ public class Main
         
     }
 
+    // Allows the user to write an ingredient. Then, the program searches that ingredient in all recipes, and returns recipes that have it
     public static void checkRecipesByIngredient(ArrayList<Recipe> recipes)
     {
         Scanner scanner = new Scanner(System.in);
@@ -270,6 +276,7 @@ public class Main
         }
     }
 
+    // Very simply allows the user to see a list of all recipes (regardless of allergies or restrictions), and prints all info about said recipe to the terminal
     public static void checkParticularRecipe(ArrayList<Recipe> recipes)
     {
         int chosen_recipe;
@@ -287,6 +294,7 @@ public class Main
         System.out.printf("\n%s", recipes.get(chosen_recipe).toString());
     }
 
+    // Chooses a random breakfast-lunch-dinner meal plan, making the user aware of any important limits being passed or goals not met
     public static void recommendRecipes(User user, ArrayList<Recipe> valid_recipes)
     {
         ArrayList<Recipe> chosen_recipes = new ArrayList<>();
@@ -299,6 +307,7 @@ public class Main
 
         do
         {
+            // A set is used here because it will not allow duplicates. Useful to only get one of each meal tipe
             chosen_recipes.clear();
             seen.clear();
             Collections.shuffle(valid_recipes); // Shuffling so that the order changes each time
@@ -317,10 +326,12 @@ public class Main
                 }
             }
 
+            // Calls a method in user that prints the nutritional considerations of the meal plan
             user.getNutritionalConsiderations(chosen_recipes);
             System.out.printf("Do you still want this meal plan? (yes/no) ");
             user_choice = scanner.nextLine();
 
+            // Allows the user to request a different, randomized meal plan
             if (user_choice.equals("yes"))
             {
                 ok_by_user = true;
@@ -333,6 +344,7 @@ public class Main
         scanner.close();
     }
 
+    // Allows the user to themselves choose three different dishes, and also check nutritional considerations like it's done above
     public static void checkCompliance(User user, ArrayList<Recipe> valid_recipes)
     {
         ArrayList<Recipe> chosen_recipes = new ArrayList<>();
@@ -363,6 +375,7 @@ public class Main
         scanner.close();
     }
     
+    // Allows the user to create a new recipe and save it to a file to be loaded later
     public static void createNewRecipe()
     {
         String recipe_name;
@@ -438,9 +451,10 @@ public class Main
 
         scanner.close();
 
+        // The "recipe_username" is the name of the file that will be saved. This could just be the name of the recipe, but I personally don't like it when files have uppercase letters and (particularly) spaces in their names
         recipe_username = RECIPE_DIRECTORY + recipe_name.toLowerCase().replace(" ", "_") + ".txt";
 
-        // Now that we know this, we can create and open the new file to write into it
+        // Creating new file to write into
         try
         {
             File new_recipe_file = new File(recipe_username);
@@ -502,6 +516,7 @@ public class Main
     }
     
     // Main "menu" (get it?) of options for the user
+    // This function also creates the User object from the info on the user.txt file
     public static void mainMenu()
     {
         int user_choice = 0;
@@ -525,6 +540,7 @@ public class Main
         ArrayList<Recipe> recipes = new ArrayList<>();
         ArrayList<Recipe> valid_recipes = new ArrayList<>();
 
+        // Creates an array with all Recipe objects
         recipes = generateRecipeObjects();
 
         try
@@ -551,6 +567,7 @@ public class Main
         vegan = Boolean.parseBoolean(user_info.get(8));
         gluten = Boolean.parseBoolean(user_info.get(9));
         muslim = Boolean.parseBoolean(user_info.get(10));
+        // If a user does not have any additional allergies, the twelvth line in the user.txt will be empty. Because of this, it will only be read if it actually exists, ie, if the user actually has allergies. Otherwise, it will be an empty Array in their User object
         if (user_info.size() > 11)
         {
             written_allergies = user_info.get(11).split(" ");
@@ -562,6 +579,7 @@ public class Main
 
         User user = new User(name, age, protein_goal, carbs, cholesterol, calories, sodium, sugar, vegan, gluten, muslim, allergies);
 
+        // Checks for "valid recipes", ie recipes that dont trigger a user's allergies or dietary restrictions. This sub-array is useful for the "recommend meal plan" option in the menu
         for (Recipe e:recipes)
         {
             if (user.canEat(e))

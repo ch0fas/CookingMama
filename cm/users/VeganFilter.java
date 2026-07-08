@@ -3,6 +3,7 @@ import cm.recipes.Recipe;
 
 public class VeganFilter implements DietaryFilter
 {
+    // Filter for ingredients/words in ingredients that may indicate foods with an animal origin.
     private final String[] VEGAN_KEYWORDS = {"milk", "cheese", "butter", "beef", "meat", "chicken", "egg", "eggs", "honey", "pork", "turkey", "fish", "cream", "yogurt"};
 
     @Override

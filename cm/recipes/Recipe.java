@@ -1,7 +1,6 @@
 package cm.recipes;
 import java.util.ArrayList;
 
-// The structure for the different recipes we have
 public class Recipe
 {
     // Recipe attributes
@@ -11,7 +10,7 @@ public class Recipe
     protected String time_of_day; // If a recipe is for "breakfast", "lunch" or "dinner"
     protected ArrayList<String> ingredients; // The ingredients by themselves, useful to check for allergies
     protected ArrayList<String> instructions; // The instructions
-    protected NutrientProfile nutrients;
+    protected NutrientProfile nutrients; // Its 6 main nutrients (protein, carbs, cholesterol, calories, sodium and sugar)
 
     public Recipe(String recipe_name, int cooking_time, double recipe_yield, String time_of_day, ArrayList<String> ingredients, ArrayList<String> instructions, NutrientProfile nutrients)
     {
@@ -61,7 +60,8 @@ public class Recipe
     public ArrayList<String> getInstructions() { return this.instructions; }
     public NutrientProfile getNutrientProfile() { return this.nutrients; }
     
-    public String getPrettyIngredientsAndInstructions()
+    // Helper method for the toString() method
+    private String getPrettyIngredientsAndInstructions()
     {
         String final_string = "";
         for (String e:getIngredients())
