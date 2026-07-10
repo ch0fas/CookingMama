@@ -113,8 +113,6 @@ public class Main
             ex.printStackTrace();
         }
 
-        scanner.close();
-
         // With the data, the User can now be created be created and the file written into
         new_user = createUser(name, age, protein_goal, carbs_limit, cholesterol_limit, calories_limit, sodium_limit, sugar_limit, is_vegan, is_gluten_allergic, is_muslim, allergies);
 
@@ -457,6 +455,8 @@ public class Main
 
         // The "recipe_username" is the name of the file that will be saved. This could just be the name of the recipe, but I personally don't like it when files have uppercase letters and (particularly) spaces in their names
         recipe_username = RECIPE_DIRECTORY + recipe_name.toLowerCase().replace(" ", "_") + ".txt";
+        File new_directory = new File(RECIPE_DIRECTORY);
+        new_directory.mkdir(); // This creates the user_recipes directory if it doesn't yet exist
 
         // Creating new file to write into
         try
@@ -639,7 +639,6 @@ public class Main
         if (!file.isFile()) // Checks if a user already exists. If it doesnt, it prompts you to create one. If it exists, it takes you to the main menu
         {
             welcomeProtocol();
-            mainMenu();
         } else
         {
             mainMenu();
